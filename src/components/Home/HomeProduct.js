@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import {StyleSheet, Text, View, Dimensions, ScrollView} from 'react-native';
 import React from 'react';
 var {width} = Dimensions.get('window');
 import ProductCard from '../Home/ProductCard';
@@ -6,15 +6,14 @@ import ProductCard from '../Home/ProductCard';
 export default function HomeProduct({products, navigation}) {
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          fontSize: 25,
-          color: '#333',
-          textAlign: 'center',
-        }}
-        >
-        Best Selling
-      </Text>
+        <Text
+          style={{
+            fontSize: 25,
+            color: '#333',
+            textAlign: 'center',
+          }}>
+          Best Selling
+        </Text>
       <View style={styles.productCard}>
         {products &&
           products.map(product => (
