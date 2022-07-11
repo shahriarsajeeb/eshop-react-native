@@ -21,33 +21,102 @@ export const productsReducer = createReducer(initialState, {
   },
 });
 
-// add to wishlist
-export const addToWishListReducer = createReducer(initialState, {
-  addToWishList: (state = {favouriteItems: []}, action) => {
-    const item = action.payload;
-    const isItemExist = state.favouriteItems.find(
-      i => i.product === item.product,
-    );
-    if (isItemExist) {
-      return {
-        ...state,
-        favouriteItems: state.favouriteItems.map(i =>
-          i.product === isItemExist.product ? item : i,
-        ),
-      };
-    } else {
-      return {
-        ...state,
-        favouriteItems: [...state.favouriteItems, item],
-      };
-    }
+// wishList add Reducer
+export const wishListaddReducer = createReducer(initialState, {
+  wishListAddRequest: state => {
+    state.loading = true;
   },
-  removeFromWishList: (state = {favouriteItems: []}, action) => {
-    return {
-      ...state,
-      favouriteItems: state.favouriteItems.filter(
-        i => i.product !== action.payload,
-      ),
-    };
+  wishListAddSuccess: (state, action) => {
+    state.loading = false;
+    state.wishlistData = action.payload;
+  },
+  wishListAddFail: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+});
+
+// wishList Data Reducer
+export const wishListReducer = createReducer(initialState, {
+  wishListDataRequest: state => {
+    state.loading = true;
+  },
+  wishListDataSuccess: (state, action) => {
+    (state.loading = false), (state.wishlistData = action.payload);
+  },
+  wishListDataFail: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+});
+
+// Wishlist Remove Reducer
+export const wishListRemoveReducer = createReducer(initialState, {
+  wishListRemoveRequest: state => {
+    state.loading = true;
+  },
+  wishListRemoveSuccess: (state, action) => {
+    (state.loading = false), (state.message = action.payload.message);
+  },
+  wishListRemoveFail: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+});
+
+// Cart Add Reducer
+export const cartAddReducer = createReducer(initialState, {
+  cartAddReducerRequest: state => {
+    state.loading = true;
+  },
+  cartAddReducerSuccess: (state, action) => {
+    state.loading = false;
+    state.cart = action.payload;
+  },
+  cartAddReducerFail: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+});
+
+// Cart Data Reducer
+export const cartReducer = createReducer(initialState, {
+  cartDataRequest: state => {
+    state.loading = true;
+  },
+  cartDataSuccess: (state, action) => {
+    (state.loading = false), (state.cartData = action.payload.cartData);
+  },
+  cartDataFail: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+});
+
+// Cart Remove Reducer
+export const cartRemoveReducer = createReducer(initialState, {
+  cartRemoveRequest: state => {
+    state.loading = true;
+  },
+  cartRemoveSuccess: (state, action) => {
+    (state.loading = false), (state.message = action.payload.message);
+  },
+  cartRemoveFail: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+});
+
+// Cart Update Reducer
+export const cartUpdateReducer = createReducer(initialState, {
+  cartUpdateRequest: state => {
+    state.loading = true;
+  },
+  cartUpdateSuccess: (state, action) => {
+    (state.loading = false), (state.message = action.payload.message);
+  },
+  cartUpdateFail: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
   },
 });

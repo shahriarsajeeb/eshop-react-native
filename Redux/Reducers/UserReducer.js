@@ -61,16 +61,52 @@ export const userReducer = createReducer(initialState, {
 });
 
 export const forgotPasswordReducer = createReducer(initialState, {
-    forgotPasswordRequest: (state) =>{
-        state.loading = true;
-        state.error = null;
-    },
-    forgotPasswordSuccess: (state = {}, action) =>{
-        state.loading = false;
-        state.message = action.payload;
-    },
-    forgotPasswordFailed: (state = {}, action) =>{
-        state.loading = false;
-        state.error = action.payload;
-    }
+  forgotPasswordRequest: state => {
+    state.loading = true;
+    state.error = null;
+  },
+  forgotPasswordSuccess: (state = {}, action) => {
+    state.loading = false;
+    state.message = action.payload;
+  },
+  forgotPasswordFailed: (state = {}, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+});
+
+export const updateProfileReducer = createReducer(initialState, {
+  updateProfileRequest: state => {
+    state.loading = true;
+    state.error = null;
+  },
+  updatePasswordRequest: state => {
+    state.loading = true;
+    state.error = null;
+  },
+  updateProfileSuccess: (state = {}, action) => {
+    state.loading = false;
+    state.isUpdated = action.payload;
+  },
+  updatePasswordSuccess: (state = {}, action) => {
+    state.loading = false;
+    state.isUpdated = action.payload;
+  },
+  updateProfileFailed: (state = {}, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+  updatePasswordFailed: (state = {}, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+  updateProfileReset: (state = {}, action) => {
+    state.isUpdated = false;
+  },
+  updatePasswordReset: (state = {}, action) => {
+    state.isUpdated = false;
+  },
+  clearError: (state = {}, action) => {
+    state.error = null;
+  },
 });

@@ -50,6 +50,7 @@ var {width} = Dimensions.get('window');
 
 export default function FilterProducts({navigation}) {
   const {products} = useSelector(state => state.products);
+  const {wishlistData} = useSelector(state => state.wishList);
   const [active, setActive] = useState('All');
   const [data, setData] = useState(products);
 
@@ -91,6 +92,7 @@ export default function FilterProducts({navigation}) {
                   key={product._id}
                   product={product}
                   navigation={navigation}
+                  wishlistData={wishlistData}
                 />
               ))}
           </>

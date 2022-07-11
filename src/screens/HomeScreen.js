@@ -4,18 +4,26 @@ import {useDispatch, useSelector} from 'react-redux';
 import Banner from '../components/Home/Banner';
 import HomeProduct from '../components/Home/HomeProduct';
 import Header from '../components/Layout/Header';
-import {getProduct} from '../../Redux/Actions/ProductAction';
+import {getProduct, getWishlist} from '../../Redux/Actions/ProductAction';
 
 export default function HomeScreen({navigation}) {
   const dispatch = useDispatch();
   const {products, error} = useSelector(state => state.products);
+  const {wishlistData} = useSelector(state => state.wishList);
 
   useEffect(() => {
-    if (error) {
-      alert(error);
+    if(error){
+      ToastAndroid.showWithGravity(
+        `${error}`,
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
     }
     dispatch(getProduct());
-  }, [dispatch, error]);
+    dispatch(getWishlist());
+  }, [dispatch,error]);
+  
+
 
   return (
     <View>
@@ -24,7 +32,11 @@ export default function HomeScreen({navigation}) {
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
         <Banner />
-        <HomeProduct products={products} navigation={navigation} />
+            <HomeProduct
+              products={products}
+              navigation={navigation}
+              wishlistData={wishlistData}
+            />
       </ScrollView>
     </View>
   );

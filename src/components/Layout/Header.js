@@ -21,19 +21,16 @@ const Header = ({navigation}) => {
   const [data, setdata] = useState(products);
   const [search, setSearch] = useState('');
 
-  const searchHandler = (text) => {
+  const searchHandler = text => {
     if (text) {
       const newData = data.filter(item => {
-        const itemData = item.name ?
-         item.name.toUpperCase()
-         : ''.toUpperCase();
-         const textData = text.toUpperCase();
-         return itemData.indexOf(textData) > -1;
+        const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
       });
       setdata(newData);
       setSearch(text);
-    }
-    else{
+    } else {
       setdata(products);
       setSearch(text);
     }
@@ -50,7 +47,7 @@ const Header = ({navigation}) => {
             placeholderTextColor="#333"
             style={styles.searchBox}
             value={search}
-            onChangeText={(text) => searchHandler(text)}
+            onChangeText={text => searchHandler(text)}
           />
           <TouchableOpacity>
             <Icon
@@ -62,57 +59,53 @@ const Header = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
-      {search.length !== 0  ? (
+      {search.length !== 0 ? (
         <>
           <ScrollView
             style={{
               position: 'absolute',
               width: '100%',
               left: 0,
-              top: 70,
+              top: height / 8 - 40,
               zIndex: 100,
               height: height * 1,
               backgroundColor: 'rgba(61, 107, 115, 0.80)',
               paddingVertical: 10,
             }}>
             {data.map((i, index) => (
-              <>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('ProductDetails', {item: i})
-                  }>
-                  <View
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ProductDetails', {item: i})}
+                key={index}>
+                <View
+                  style={{
+                    marginVertical: 15,
+                    marginHorizontal: 15,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <Image
+                    source={{uri: i.images[0].url}}
+                    style={{height: 40, width: 40}}
+                  />
+                  <Text
                     style={{
-                      marginVertical: 15,
-                      marginHorizontal: 15,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}
-                    key={index}>
-                    <Image
-                      source={{uri: i.images[0].url}}
-                      style={{height: 40, width: 40}}
-                    />
-                    <Text
-                      style={{
-                        color: '#fff',
-                        paddingLeft: 20,
-                        fontWeight: '700',
-                      }}>
-                      {i.name}
-                    </Text>
-                    <Icon
-                      name="star"
-                      color="#fff"
-                      size={18}
-                      style={{marginLeft: 20}}
-                    />
-                    <Text style={{color: '#fff', paddingLeft: 5}}>
-                      ({i.numOfReviews})
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </>
+                      color: '#fff',
+                      paddingLeft: 20,
+                      fontWeight: '700',
+                    }}>
+                    {i.name}
+                  </Text>
+                  <Icon
+                    name="star"
+                    color="#fff"
+                    size={18}
+                    style={{marginLeft: 20}}
+                  />
+                  <Text style={{color: '#fff', paddingLeft: 5}}>
+                    ({i.numOfReviews})
+                  </Text>
+                </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </>

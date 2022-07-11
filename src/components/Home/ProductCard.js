@@ -10,39 +10,74 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useDispatch } from 'react-redux';
-import { addToWishlist } from '../../../Redux/Actions/ProductAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  addToCart,
+  addToWishlist,
+  getWishlist,
+  removeWishlist,
+} from '../../../Redux/Actions/ProductAction';
+import {useEffect} from 'react';
 
 var {width} = Dimensions.get('window');
 
-export default function ProductCard({product, navigation}) {
-
-  const dispatch = useDispatch();
+export default function ProductCard({product, navigation, wishlistData}) {
+  const {user} = useSelector(state => state.user);
 
   const [click, setClick] = useState(false);
-  
-  const qty = 1;
+  const [data, setData] = useState('');
+  const [touch, setTouch] = useState(false);
+  const dispatch = useDispatch();
 
-  const wishListHandler = () => {
-    setClick(!click);
-    dispatch(addToWishlist(product._id,qty));
+  const wishListHandler = async () => {
+    setClick(true);
+    await dispatch(
+      addToWishlist(
+        product.name,
+        1,
+        product.images[0].url,
+        product.price,
+        user._id,
+        product._id,
+        product.Stock,
+      ),
+    );
     ToastAndroid.showWithGravity(
-    `${product.name} added to Wishlist`, 
-    ToastAndroid.SHORT, 
-    ToastAndroid.BOTTOM);
-  };
-  const removeWishList = () => {
-    setClick(!click);
-    ToastAndroid.showWithGravity(
-      `${product.name} removed from Wishlist`, 
+      `${product.name} Added to wishlist`,
       ToastAndroid.SHORT,
       ToastAndroid.BOTTOM,
     );
   };
+
+  const removeWishList = data => {
+    setClick(false);
+    setTouch(true);
+    let id = data;
+    dispatch(removeWishlist(id));
+    ToastAndroid.showWithGravity(
+      `${product.name} removed from wishlist`,
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+    );
+  };
+
+  useEffect(() => {
+    if (wishlistData && wishlistData.length > 0) {
+      wishlistData.map(data => {
+        setData(data);
+        if (data.productId === product._id && touch === false) {
+          setClick(true);
+        }
+      });
+    }
+  }, [wishlistData]);
+
   return (
     <>
       <TouchableWithoutFeedback
-        onPress={() => navigation.navigate('ProductDetails', {item: product})}>
+        onPress={() =>
+          navigation.navigate('ProductDetails', {item: product, wishlistData})
+        }>
         <View style={styles.ProductCard}>
           <Image source={{uri: product.images[0].url}} style={styles.image} />
           <View>
@@ -119,7 +154,7 @@ export default function ProductCard({product, navigation}) {
                     marginRight: 10,
                     color: 'crimson',
                   }}
-                  onPress={removeWishList}
+                  onPress={() => removeWishList(data._id)}
                 />
               </TouchableOpacity>
             ) : (
@@ -135,18 +170,6 @@ export default function ProductCard({product, navigation}) {
                 />
               </TouchableOpacity>
             )}
-            {product.Stock !== 0 ? (
-              <TouchableOpacity>
-                <Icon
-                  name="cart-outline"
-                  size={25}
-                  style={{
-                    marginRight: 10,
-                    color: '#333',
-                  }}
-                />
-              </TouchableOpacity>
-            ) : null}
           </View>
           {product.Stock === 0 ? (
             <View style={styles.outOfStock}>

@@ -2,18 +2,21 @@ import {StyleSheet, Text, View, Dimensions, ScrollView} from 'react-native';
 import React from 'react';
 var {width} = Dimensions.get('window');
 import ProductCard from '../Home/ProductCard';
+import {useEffect} from 'react';
+import {useState} from 'react';
 
-export default function HomeProduct({products, navigation}) {
+export default function HomeProduct({products, navigation, wishlistData}) {
+  
   return (
     <View style={styles.container}>
-        <Text
-          style={{
-            fontSize: 25,
-            color: '#333',
-            textAlign: 'center',
-          }}>
-          Best Selling
-        </Text>
+      <Text
+        style={{
+          fontSize: 25,
+          color: '#333',
+          textAlign: 'center',
+        }}>
+        Best Selling
+      </Text>
       <View style={styles.productCard}>
         {products &&
           products.map(product => (
@@ -21,6 +24,7 @@ export default function HomeProduct({products, navigation}) {
               key={product._id}
               product={product}
               navigation={navigation}
+              wishlistData={wishlistData}
             />
           ))}
       </View>

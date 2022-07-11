@@ -1,47 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import { Provider, useSelector } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {Provider, useSelector} from 'react-redux';
 import Store from './Redux/Store';
-import { NavigationContainer } from '@react-navigation/native';
-import Main from "./Navigations/Main";
-import Auth from "./Navigations/Auth";
-import { loadUser } from './Redux/Actions/UserAction';
+import {NavigationContainer} from '@react-navigation/native';
+import Main from './Navigations/Main';
+import Auth from './Navigations/Auth';
+import {loadUser} from './Redux/Actions/UserAction';
 import Splash from './src/components/Layout/Splash';
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 
-const App = () =>{
+const App = () => {
   return (
     <Provider store={Store}>
-    <AppStack />
+      <AppStack />
     </Provider>
-  )
+  );
+};
 
-}
-
-const AppStack = () =>{
-  const {isAuthenticated,loading} = useSelector((state) =>state.user);
+const AppStack = () => {
+  const {isAuthenticated, loading} = useSelector(state => state.user);
 
   useEffect(() => {
     Store.dispatch(loadUser());
   }, []);
-  return(
+
+  return (
     <NavigationContainer>
-      <>
-      {loading ? <Splash /> : (
-        <>
-         {
-          isAuthenticated ? 
-          (
-            <Main /> 
-          )
-          :(
-            <Auth />
-          )
-        } 
-        </>     
-      )}
-      </>
+      <>{loading ? <Splash /> : <>{isAuthenticated ? <Main /> : <Auth />}</>}</>
     </NavigationContainer>
-  )
-}
+  );
+};
 
-
-export default App
+export default App;

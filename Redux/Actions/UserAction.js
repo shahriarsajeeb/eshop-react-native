@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {URI} from '../URI';
 
 // Login User
 export const userLogin = (email, password) => async dispatch => {
@@ -10,7 +11,7 @@ export const userLogin = (email, password) => async dispatch => {
     const config = {headers: {'Content-Type': 'application/json'}};
 
     const {data} = await axios.post(
-      `https://mern-nest-ecommerce.herokuapp.com/api/v2/login`,
+      `${URI}/api/v2/login`,
       {email, password},
       config,
     );
@@ -32,7 +33,7 @@ export const register = (name, email, password, avatar) => async dispatch => {
     dispatch({type: 'userCreateRequest'});
 
     const {data} = await axios.post(
-      `https://mern-nest-ecommerce.herokuapp.com/api/v2/registration`,
+      `${URI}/api/v2/registration`,
       {name, email, password, avatar},
       {
         headers: {
@@ -54,9 +55,7 @@ export const loadUser = () => async dispatch => {
   try {
     dispatch({type: 'userLoadRequest'});
 
-    const {data} = await axios.get(
-      `https://mern-nest-ecommerce.herokuapp.com/api/v2/me`,
-    );
+    const {data} = await axios.get(`${URI}/api/v2/me`);
 
     dispatch({type: 'userLoadSuccess', payload: data.user});
   } catch (error) {
@@ -68,7 +67,7 @@ export const loadUser = () => async dispatch => {
 
 export const logOutUser = () => async dispatch => {
   try {
-    await axios.get(`https://mern-nest-ecommerce.herokuapp.com/api/v2/logout`);
+    await axios.get(`${URI}/api/v2/logout`);
     dispatch({type: 'userLogOutSucess'});
   } catch (error) {
     dispatch({type: 'userLogOutFail', payload: error.response.data.message});
@@ -76,14 +75,14 @@ export const logOutUser = () => async dispatch => {
 };
 
 // Forgot Password
-export const forgotPassword = (email) => async dispatch => {
+export const forgotPassword = email => async dispatch => {
   try {
     dispatch({type: 'forgotPasswordRequest'});
 
     const config = {headers: {'Content-Type': 'application/json'}};
 
     const {data} = await axios.post(
-      `https://mern-nest-ecommerce.herokuapp.com/api/v2/password/forgot`,
+      `${URI}/api/v2/password/forgot`,
       {email},
       config,
     );
@@ -93,5 +92,29 @@ export const forgotPassword = (email) => async dispatch => {
       type: 'forgotPasswordFailed',
       payload: error.response.data.message,
     });
+  }
+};
+
+// Update Profile
+export const updateProfile = userData => async dispatch => {
+  try {
+    dispatch({type: 'updateProfileRequest'});
+
+    const config = {headers: {'Content-Type': 'multipart/form-data'}};
+
+    const {data} = await axios.put(
+      `${URI}/api/v2/me/update/info`,
+      userData,
+      config,
+    );
+
+    dispatch({type: 'updateProfileSuccess', payload: data.success});
+    console.log(data.success);
+  } catch (error) {
+    dispatch({
+      type: 'updateProfileFailed',
+      payload: error.response.data.message,
+    });
+    console.log(error.response.data.message);
   }
 };

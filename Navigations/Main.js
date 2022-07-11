@@ -6,7 +6,7 @@ import WishListScreen from '../src/screens/WishListScreen';
 import CartScreen from '../src/screens/CartScreen';
 import ProfileScreen from '../src/screens/ProfileScreen';
 import DrawerItems from '../src/components/Layout/DrawerItems';
-import OrderScreen from "../src/screens/OrderScreen";
+import UserOrder from "../src/components/Order/UserOrder";
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Image} from 'react-native';
 
@@ -83,7 +83,7 @@ const Main = () => {
         />
          <Drawer.Screen
           name="My Orders"
-          component={OrderScreen}
+          component={UserOrder}
           options={{
             drawerIcon: ({color}) => (
               <Icon name="reader-outline" size={25} color={color} />
